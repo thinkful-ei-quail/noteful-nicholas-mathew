@@ -1,18 +1,23 @@
-import React from 'react';
-import { Route } from 'react-router-dom';
-import MainPage from './MainPage/MainPage';
+import React, {Component} from 'react';
+import { Route, Link } from 'react-router-dom';
+import Main from './MainPage/MainPage';
 import FolderPage from './FolderPage/FolderPage';
 import NotePage from './NotePage/NotePage';
-import Header from '.header/Header';
+import Header from './header/header';
 
-class App extends React.Component () {
+class App extends Component {
+    state = 
+    {
+      state:[]
+    }
   render () {
     return (
       <main className='App'>
         <header>
-          <Route path='/MainPage' component={Header} />
+          <Link path='/MainPage' component={Header} />
         </header>
-        <Route path='/MainPage' component={MainPage} />
+        <Main />
+        <Link path='/' component={Main} />
         <Route path='/FolderPage' component={FolderPage} />
         <Route path='/NotePage' component={NotePage} />
       </main>
