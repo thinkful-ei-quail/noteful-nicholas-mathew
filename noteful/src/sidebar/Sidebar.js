@@ -1,25 +1,29 @@
 import React, { Component } from 'react';
 import Folder   from '../Folder/Folder';
 import folders from '../store/dummy-store';
-import { Route } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
-export default class Sidebar extends Component{
-    render(){
-
-        return(
-            <div>
-                {folders.map(folder =>
-                    <Route
-                        path='/FolderPage/:folderId'
-                        render={() =>
-                            <Folder
-                                id={folder.id}
-                                name={folder.name}
-                            />}
-                    />
+export default function Sidebar(props) {
+    return(
+        <div>
+            <ul className="nav-list">
+                {props.folders.map(folder =>
+                    <li key={folder.id}>
+                        <NavLink
+                            className="nav-folder-link"
+                            to={`/FolderPage/${folder.id}`}
+                        >
+                        <span className="nav-note-num">
+                            #todo: count notes in folder id
+                        </span>
+                        {folder.name}
+                        </ NavLink>
+                    </li>
                 )}
-            </div>
-        );
-    }
-
+            </ul>
+        </div>
+    );
+}
+Sidebar.defaultProps = {
+    folders: []
 }
