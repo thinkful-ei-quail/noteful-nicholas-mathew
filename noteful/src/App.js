@@ -7,6 +7,7 @@ import store from './store/dummy-store';
 import SidebarNotePage from './SidebarNotePage/SidebarNotePage';
 import NoteList from './NoteList/NoteList';
 import { folderFind, noteFind, getNotesForFolder } from './finder';
+import NotefulContext from './NotefulContext';
 import './App.css';
 
 class App extends Component {
@@ -27,14 +28,8 @@ renderRoutesNav(){
       <Route 
         exact
         key={path} 
-        path={path} 
-        render={propsRoute => (
-          <FolderList
-            folders={folders}
-            notes={notes}
-            {...propsRoute}
-          />
-        )}
+        path={path}
+        component={FolderList}
       />
     ))}
     <Route 
@@ -85,13 +80,18 @@ renderRoutesMain(){
     // console.log(this.state, 'react state');
     return (
       <div className='App'>
-        <header>
-          <Link to='/'><Header /></Link>
-        </header>
-        <div className='folders-notes'>
-          <nav className="App-nav">{this.renderRoutesNav()}</nav>
-          <main className="App-main">{this.renderRoutesMain()}</main>
-        </div>
+        <NotefulContext.Provider value={{
+          notes: this.state.notes,
+          folders: this.state.folders
+        }}>
+          <header>
+            <Link to='/'><Header /></Link>
+          </header>
+          <div className='folders-notes'>
+            <nav className="App-nav">{this.renderRoutesNav()}</nav>
+            <main className="App-main">{this.renderRoutesMain()}</main>
+          </div>
+        </NotefulContext.Provider>
       </div>
     );
   }
