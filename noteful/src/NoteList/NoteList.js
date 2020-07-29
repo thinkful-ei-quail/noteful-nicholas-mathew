@@ -1,12 +1,23 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Note from '../Note/Note';
 
-export default class NoteList extends Component{
-    render(){
-        return(
-            <div>
-            <Note />
-            </div>
-        )
-    }
+export default function NoteList(props){
+    return(
+        <div className="noteList">
+            <ul>
+                {props.notes.map(note =>
+                    <li key={note.id}>
+                        <Note
+                        id={note.id}
+                        name={note.name}
+                        modified={note.modified} 
+                        />
+                    </li>
+                )}
+            </ul>
+        </div>
+    )
+}
+NoteList.defaultProps = {
+    notes:[],
 }

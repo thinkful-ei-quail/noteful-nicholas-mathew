@@ -1,7 +1,5 @@
-import React, { Component } from 'react';
-import Folder   from '../Folder/Folder';
-import folders from '../store/dummy-store';
-import { NavLink, Link } from 'react-router-dom';
+import React from 'react';
+import { NavLink, Link} from 'react-router-dom';
 
 export default function Sidebar(props) {
     return(
@@ -11,7 +9,7 @@ export default function Sidebar(props) {
                     <li key={folder.id}>
                         <NavLink
                             className="nav-folder-link"
-                            to={`/FolderPage/${folder.id}`}
+                            to={`/folder/${folder.id}`}
                         >
                         <span className="nav-note-num">
                             #todo: count notes in folder id
