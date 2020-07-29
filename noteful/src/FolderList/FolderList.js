@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { NavLink} from 'react-router-dom';
 import {notesCountForFolder} from '../finder';
+import './FolderList.css';
 
 export default class FolderList extends Component{
     render(){
