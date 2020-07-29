@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import folders from '../store/dummy-store';
-import { NavLink, Link} from 'react-router-dom';
+import { NavLink} from 'react-router-dom';
+import {notesCountForFolder} from '../finder';
 
 export default class FolderList extends Component{
     render(){
@@ -13,10 +13,10 @@ export default class FolderList extends Component{
                             className='NoteListNav__folder-link'
                             to={`/folder/${folder.id}`}
                             >
+                                {folder.name} {' '}
                                 <span className='NoteListNav__num-notes'>
-                                    #todo count notes for folder
+                                    {notesCountForFolder(this.props.notes, folder.id)}
                                 </span>
-                                {folder.name}
                             </NavLink>
                         </li>
                     )}

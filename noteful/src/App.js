@@ -6,7 +6,8 @@ import Header from './Header/Header';
 import store from './store/dummy-store';
 import SidebarNotePage from './SidebarNotePage/SidebarNotePage';
 import NoteList from './NoteList/NoteList';
-import {folderFind, noteFind, getNotesForFolder} from './finder';
+import { folderFind, noteFind, getNotesForFolder } from './finder';
+import './App.css';
 
 class App extends Component {
   state = {
@@ -49,7 +50,7 @@ renderRoutesNav(){
   )
 }
 renderRoutesMain(){
-  const {notes, folders} = this.state;
+  const {notes} = this.state;
   return (
     <div>
       {['/', '/folder/:folderId'].map(path =>(
@@ -84,11 +85,13 @@ renderRoutesMain(){
     // console.log(this.state, 'react state');
     return (
       <div className='App'>
-        <nav className="App-nav">{this.renderRoutesNav()}</nav>
         <header>
           <Link to='/'><Header /></Link>
         </header>
-        <main className="App-main">{this.renderRoutesMain()}</main>
+        <div className='folders-notes'>
+          <nav className="App-nav">{this.renderRoutesNav()}</nav>
+          <main className="App-main">{this.renderRoutesMain()}</main>
+        </div>
       </div>
     );
   }
