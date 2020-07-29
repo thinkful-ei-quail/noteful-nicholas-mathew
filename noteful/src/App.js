@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import { Route, Link } from 'react-router-dom';
-import Main from './MainPage/MainPage';
-import FolderPage from './FolderPage/FolderPage';
+import FolderList from './FolderList/FolderList';
 import NotePage from './NotePage/NotePage';
 import Header from './Header/Header';
 import store from './store/dummy-store';
-import Sidebar from './sidebar/Sidebar';
+import SidebarNotePage from './SidebarNotePage/SidebarNotePage';
 import NoteList from './NoteList/NoteList';
 import {folderFind, noteFind, getNotesForFolder} from './finder';
 
@@ -23,13 +22,13 @@ renderRoutesNav(){
   const {notes, folders} = this.state;
   return (
     <div>
-    {['/', '/folder/:folder.id'].map(path =>(
+    {['/', '/folder/:folderId'].map(path =>(
       <Route 
         exact
         key={path} 
         path={path} 
         render={propsRoute => (
-          <NoteList
+          <FolderList
             folders={folders}
             notes={notes}
             {...propsRoute}
@@ -43,7 +42,7 @@ renderRoutesNav(){
           const {noteId} = propsRoute.match.params;
           const note = noteFind(notes, noteId) || {}
           const folder = folderFind(folders, note.folderId);
-          return <Sidebar {...propsRoute} folder={folder} />
+          return <SidebarNotePage {...propsRoute} folder={folder} />
         }}
     />
     </div>
@@ -53,7 +52,7 @@ renderRoutesMain(){
   const {notes, folders} = this.state;
   return (
     <div>
-      {['/', '/folder/:folder.id'].map(path =>(
+      {['/', '/folder/:folderId'].map(path =>(
         <Route 
           exact
           key={path} 
@@ -65,7 +64,7 @@ renderRoutesMain(){
               <NoteList
                 notes={notesForFolder}
                 {...propsRoute}
-            />
+              />
             );
           }}
         />
@@ -87,7 +86,7 @@ renderRoutesMain(){
       <div className='App'>
         <nav className="App-nav">{this.renderRoutesNav()}</nav>
         <header>
-          <Link to='/MainPage' component={Header} />
+          <Link to='/'><Header /></Link>
         </header>
         <main className="App-main">{this.renderRoutesMain()}</main>
       </div>
