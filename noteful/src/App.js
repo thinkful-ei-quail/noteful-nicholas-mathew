@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import { Route, Link } from 'react-router-dom';
-import Main from './MainPage/MainPage';
-import FolderPage from './FolderPage/FolderPage';
+import FolderList from './FolderList/FolderList';
 import NotePage from './NotePage/NotePage';
-import Header from './header/header';
+import Header from './Header/Header';
 import store from './store/dummy-store';
-import Sidebar from './sidebar/Sidebar';
+import SidebarNotePage from './SidebarNotePage/SidebarNotePage';
 import NoteList from './NoteList/NoteList';
-import {folderFind, noteFind} from './finder';
+import { folderFind, noteFind, getNotesForFolder } from './finder';
+import './App.css';
 
 class App extends Component {
   state = {
@@ -23,13 +23,13 @@ renderRoutesNav(){
   const {notes, folders} = this.state;
   return (
     <div>
-    {['/folder/:folder.id'].map(path =>(
+    {['/', '/folder/:folderId'].map(path =>(
       <Route 
         exact
         key={path} 
         path={path} 
         render={propsRoute => (
-          <NoteList
+          <FolderList
             folders={folders}
             notes={notes}
             {...propsRoute}
@@ -43,52 +43,55 @@ renderRoutesNav(){
           const {noteId} = propsRoute.match.params;
           const note = noteFind(notes, noteId) || {}
           const folder = folderFind(folders, note.folderId);
-          return <Sidebar {...propsRoute} folder={folder} />
+          return <SidebarNotePage {...propsRoute} folder={folder} />
         }}
     />
     </div>
   )
 }
 renderRoutesMain(){
-  const {notes, folders} = this.state;
+  const {notes} = this.state;
   return (
     <div>
-    {['/folder/:folder.id'].map(path =>(
+      {['/', '/folder/:folderId'].map(path =>(
+        <Route 
+          exact
+          key={path} 
+          path={path} 
+          render={propsRoute => {
+            const {folderId} = propsRoute.match.params
+            const notesForFolder = getNotesForFolder(notes, folderId);
+            return (
+              <NoteList
+                notes={notesForFolder}
+                {...propsRoute}
+              />
+            );
+          }}
+        />
+      ))}
       <Route 
-        exact
-        key={path} 
-        path={path} 
-        return={propsRoute => (
-          <NoteList
-            notes={notes}
-            {...propsRoute}
-          />
-        )}
+          path="/note/:noteId"
+          render = {propsRoute => {
+            const {noteId} = propsRoute.match.params;
+            const note = noteFind(notes, noteId);
+            return <NotePage {...propsRoute} note={note} />
+          }}
       />
-    ))}
-    <Route 
-        path="/note/:noteId"
-        render = {propsRoute => {
-          const {noteId} = propsRoute.match.params;
-          const note = noteFind(notes, noteId);
-          return <NotePage {...propsRoute} note={note} />
-        }}
-    />
     </div>
-  )
+  );
 }
   render () {
-    console.log(this.state, 'react state');
+    // console.log(this.state, 'react state');
     return (
       <div className='App'>
         <header>
-          <Link to='/MainPage' component={Header} />
+          <Link to='/'><Header /></Link>
         </header>
-        <main>
-        <Link to='/' component={Main} />
-        <Route path='/FolderPage' component={FolderPage} />
-        <Route path='/NotePage' component={NotePage} />
-        </main>
+        <div className='folders-notes'>
+          <nav className="App-nav">{this.renderRoutesNav()}</nav>
+          <main className="App-main">{this.renderRoutesMain()}</main>
+        </div>
       </div>
     );
   }

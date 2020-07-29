@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, Link} from 'react-router-dom';
+import NavLink from 'react-router-dom';
 
 export default function Sidebar(props) {
     return(
@@ -11,10 +11,10 @@ export default function Sidebar(props) {
                             className="nav-folder-link"
                             to={`/folder/${folder.id}`}
                         >
-                        <span className="nav-note-num">
-                            #todo: count notes in folder id
-                        </span>
-                        {folder.name}
+                            <span className="nav-note-num">
+                                #todo: count notes in folder id
+                            </span>
+                            {folder.name}
                         </ NavLink>
                     </li>
                 )}
