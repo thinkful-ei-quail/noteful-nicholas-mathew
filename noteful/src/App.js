@@ -6,7 +6,7 @@ import Header from './Header/Header';
 import store from './store/dummy-store';
 import SidebarNotePage from './SidebarNotePage/SidebarNotePage';
 import NoteList from './NoteList/NoteList';
-import { folderFind, noteFind, getNotesForFolder } from './finder';
+import { noteFind } from './finder';
 import NotefulContext from './NotefulContext';
 import './App.css';
 
@@ -21,7 +21,6 @@ class App extends Component {
   }
 
 renderRoutesNav(){
-  const {notes, folders} = this.state;
   return (
     <div>
     {['/', '/folder/:folderId'].map(path =>(
@@ -34,18 +33,12 @@ renderRoutesNav(){
     ))}
     <Route 
         path="/note/:noteId"
-        render = {propsRoute => {
-          const {noteId} = propsRoute.match.params;
-          const note = noteFind(notes, noteId) || {}
-          const folder = folderFind(folders, note.folderId);
-          return <SidebarNotePage {...propsRoute} folder={folder} />
-        }}
+        component={SidebarNotePage}
     />
     </div>
   )
 }
 renderRoutesMain(){
-  const {notes} = this.state;
   return (
     <div>
       {['/', '/folder/:folderId'].map(path =>(
@@ -53,37 +46,24 @@ renderRoutesMain(){
           exact
           key={path} 
           path={path} 
-          render={propsRoute => {
-            const {folderId} = propsRoute.match.params
-            const notesForFolder = getNotesForFolder(notes, folderId);
-            return (
-              <NoteList
-                notes={notesForFolder}
-                {...propsRoute}
-              />
-            );
-          }}
+          component={NoteList}
         />
       ))}
       <Route 
           path="/note/:noteId"
-          render = {propsRoute => {
-            const {noteId} = propsRoute.match.params;
-            const note = noteFind(notes, noteId);
-            return <NotePage {...propsRoute} note={note} />
-          }}
+          component={NotePage}
       />
     </div>
   );
 }
   render () {
-    // console.log(this.state, 'react state');
+    const contextValue = {
+      notes: this.state.notes,
+      folders: this.state.folders,
+    }
     return (
       <div className='App'>
-        <NotefulContext.Provider value={{
-          notes: this.state.notes,
-          folders: this.state.folders
-        }}>
+        <NotefulContext.Provider value={contextValue}>
           <header>
             <Link to='/'><Header /></Link>
           </header>

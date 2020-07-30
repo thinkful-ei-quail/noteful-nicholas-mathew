@@ -1,22 +1,33 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Note from '../Note/Note';
+import NotefulContext from '../NotefulContext';
+import { noteFind } from '../finder';
 
-export default function NotePage(props){
-    return (
-        <div className="note-page">
-            <Note 
-                id={props.note.id}
-                name={props.note.name}
-                modified={props.note.modified}
-            />
-            <div className="notePage-content">
-                {props.note.content}
+export default class NotePage extends Component {
+    static defaultProps = {
+        match: {
+            params: {}
+        }
+    }
+
+    static contextType = NotefulContext;
+
+    render() {
+        const { notes=[] } = this.context;
+        const { noteId } = this.props.match.params;
+        const thisNote = noteFind(notes, noteId) || { content: ''};
+
+        return (
+            <div className="note-page">
+                <Note 
+                    id={thisNote.id}
+                    name={thisNote.name}
+                    modified={thisNote.modified}
+                />
+                <div className="notePage-content">
+                    {thisNote.content}
+                </div>
             </div>
-        </div>
-    )
-}
-NotePage.defaultProps={
-    note:{
-        content: '',
+        );
     }
 }
