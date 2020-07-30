@@ -6,7 +6,6 @@ import Header from './Header/Header';
 import store from './store/dummy-store';
 import SidebarNotePage from './SidebarNotePage/SidebarNotePage';
 import NoteList from './NoteList/NoteList';
-import { noteFind } from './finder';
 import NotefulContext from './NotefulContext';
 import './App.css';
 
